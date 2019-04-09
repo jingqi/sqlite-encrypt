@@ -8,13 +8,17 @@ all:
 	cd ${NUT_PATH}/proj/makefile ; $(MAKE) -f nut.mk
 	$(MAKE) -f sqlite.mk
 	$(MAKE) -f sqlite_encrypt.mk
+	$(MAKE) -f sqlitecpp.mk
 	$(MAKE) -f test_sqlite_encrypt.mk
+	$(MAKE) -f test_sqlitecpp.mk
 
 clean:
 	cd ${NUT_PATH}/proj/makefile ; $(MAKE) -f nut.mk clean
 	$(MAKE) -f sqlite.mk clean
 	$(MAKE) -f sqlite_encrypt.mk clean
+	$(MAKE) -f sqlitecpp.mk clean
 	$(MAKE) -f test_sqlite_encrypt.mk clean
+	$(MAKE) -f test_sqlitecpp.mk clean
 
 rebuild:
 	$(MAKE) clean
@@ -22,6 +26,9 @@ rebuild:
 
 run:
 	$(MAKE) -f test_sqlite_encrypt.mk run
+
+run_test_sqlitecpp:
+	$(MAKE) -f test_sqlitecpp.mk run
 
 valgrind:
 	$(MAKE) -f test_sqlite_encrypt.mk valgrind

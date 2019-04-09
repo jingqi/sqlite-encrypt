@@ -1,8 +1,9 @@
 #!/user/bin/env make
 
-TARGET_NAME = sqlite_encrypt
+TARGET_NAME = sqlitecpp
 SRC_ROOT = ../../src/${TARGET_NAME}
 SQLITE_SRC_PATH = ../../src/sqlite
+SQLITE_ENCRYPT_SRC_PATH = ../../src/sqlite_encrypt
 
 # Preface rules
 include ${NUT_PATH}/proj/makefile/preface_rules.mk
@@ -35,8 +36,8 @@ clean:
 	rm -rf ${OBJS} ${DEPS} ${TARGET}
 
 rebuild:
-	$(MAKE) -f sqlite_encrypt.mk clean
-	$(MAKE) -f sqlite_encrypt.mk all
+	$(MAKE) -f sqlitecpp.mk clean
+	$(MAKE) -f sqlitecpp.mk all
 
 ${NUT_PATH}/proj/makefile/${OUT_DIR_NAME}/libnut.${DL_SUFFIX}:
 	cd ${NUT_PATH}/proj/makefile ; $(MAKE) -f nut.mk
@@ -45,13 +46,25 @@ ${OUT_DIR}/libnut.${DL_SUFFIX}: ${NUT_PATH}/proj/makefile/${OUT_DIR_NAME}/libnut
 	cp -f $< $@
 
 # Extra depends
-OBJS += ${OBJ_ROOT}/shell.o
-DEPS += ${OBJ_ROOT}/shell.d
+OBJS += ${OBJ_ROOT}/shell.o ${OBJ_ROOT}/codec.o ${OBJ_ROOT}/codecext.o
+DEPS += ${OBJ_ROOT}/shell.d ${OBJ_ROOT}/codec.d ${OBJ_ROOT}/codecext.d
 
 ${OBJ_ROOT}/shell.o: ${SQLITE_SRC_PATH}/shell.c
 	$(make-c-obj)
 
 ${OBJ_ROOT}/shell.d: ${SQLITE_SRC_PATH}/shell.c
+	$(make-c-dep)
+
+${OBJ_ROOT}/codec.o: ${SQLITE_ENCRYPT_SRC_PATH}/codec.cpp
+	$(make-cxx-obj)
+
+${OBJ_ROOT}/codec.d: ${SQLITE_ENCRYPT_SRC_PATH}/codec.cpp
+	$(make-cxx-dep)
+
+${OBJ_ROOT}/codecext.o: ${SQLITE_ENCRYPT_SRC_PATH}/codecext.c
+	$(make-c-obj)
+
+${OBJ_ROOT}/codecext.d: ${SQLITE_ENCRYPT_SRC_PATH}/codecext.c
 	$(make-c-dep)
 
 # Rules

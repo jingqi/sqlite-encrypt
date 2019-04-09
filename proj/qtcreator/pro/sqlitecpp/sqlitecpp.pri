@@ -1,5 +1,5 @@
 
-TARGET = sqlite_encrypt
+TARGET = sqlitecpp
 TEMPLATE = lib
 VERSION = 3.15.1
 
@@ -10,17 +10,20 @@ CONFIG -= qt
 DEFINES += SQLITE_HAS_CODEC
 
 SQLITE_SRC_PATH = $$PWD/../../../../src/sqlite
-SRC_ROOT = $$PWD/../../../../src/sqlite_encrypt
+SQLITE_ENCRYPT_SRC_PATH = $$PWD/../../../../src/sqlite_encrypt
+SRC_ROOT = $$PWD/../../../../src/sqlitecpp
 
 INCLUDEPATH += $${SQLITE_SRC_PATH}
 
 HEADERS += \
     $$files($${SQLITE_SRC_PATH}/*.h, true) \
+    $$files($${SQLITE_ENCRYPT_SRC_PATH}/*.h, true) \
     $$files($${SRC_ROOT}/*.h, true)
 
 # HACK "sqlite3.c" 被包含在了 "codecext.c" 中
 SOURCES += \
     $${SQLITE_SRC_PATH}/shell.c \
+    $$files($${SQLITE_ENCRYPT_SRC_PATH}/*.c*, true) \
     $$files($${SRC_ROOT}/*.c*, true)
 
 # 链接库

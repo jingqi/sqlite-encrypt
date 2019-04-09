@@ -1,7 +1,7 @@
 #!/user/bin/env make
 
 TARGET_NAME = sqlite
-SRC_ROOT = ../../src/sqlite
+SRC_ROOT = ../../src/${TARGET_NAME}
 
 # Preface rules
 include ${NUT_PATH}/proj/makefile/preface_rules.mk
