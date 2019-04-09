@@ -27,7 +27,7 @@ mac {
 }
 
 # sqlite_encrypt
-INCLUDEPATH += $${SQLITE_ENCRYPT_PATH}/src/sqlite-amalgamation-3150100
+INCLUDEPATH += $$PWD/../../../../src/sqlite
 LIBS += -L$$OUT_PWD/../sqlite_encrypt$${OUT_TAIL}
 win32: LIBS += -lsqlite_encrypt3
 else: LIBS += -lsqlite_encrypt

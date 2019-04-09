@@ -2,7 +2,7 @@
 
 TARGET_NAME = sqlite_encrypt
 SRC_ROOT = ../../src/${TARGET_NAME}
-SQLITE_INCLUDE_PATH = ../../src/sqlite-amalgamation-3150100
+SQLITE_INCLUDE_PATH = ../../src/sqlite
 
 # Preface rules
 include ${NUT_PATH}/proj/makefile/preface_rules.mk

@@ -9,7 +9,7 @@ CONFIG -= qt
 
 DEFINES += SQLITE_HAS_CODEC
 
-SQLITE_INCLUDE_PATH = $$PWD/../../../../src/sqlite-amalgamation-3150100
+SQLITE_INCLUDE_PATH = $$PWD/../../../../src/sqlite
 SRC_ROOT = $$PWD/../../../../src/sqlite_encrypt
 
 INCLUDEPATH += $${SQLITE_INCLUDE_PATH}

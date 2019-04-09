@@ -7,7 +7,7 @@ include(../sqlite_encrypt_common.pri)
 
 CONFIG -= qt
 
-SRC_ROOT = $$PWD/../../../../src/sqlite-amalgamation-3150100
+SRC_ROOT = $$PWD/../../../../src/sqlite
 
 INCLUDEPATH += $${SRC_ROOT}
 

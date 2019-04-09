@@ -17,7 +17,7 @@ ns.get_app().import_namespace(join(nut_proj_root, 'novaconfig_nut.py'))
 
 ## Vars
 src_root = join(CWD, '../../src/sqlite_encrypt')
-sqlite_src_root = join(CWD, '../../src/sqlite-amalgamation-3150100')
+sqlite_src_root = join(CWD, '../../src/sqlite')
 out_dir = platform.system().lower() + '-' + ('debug' if ns['DEBUG'] == '1' else 'release')
 out_root = join(CWD, out_dir)
 obj_root = join(out_root, 'obj/sqlite_encrypt')
