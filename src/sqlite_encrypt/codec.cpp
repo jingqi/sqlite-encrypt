@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <string.h>
 
+#include <nut/platform/endian.h>
 #include <nut/security/digest/sha2_256.h>
 #include <nut/security/encrypt/aes.h>
 
@@ -101,6 +102,9 @@ const char* Codec::get_and_reset_error()
 void Codec::get_page_iv(uint32_t page_no, bool use_write_key, uint8_t iv[16])
 {
     nut::SHA2_256 sha;
+#if NUT_ENDIAN_BIG_BYTE
+    page_no = nut::bswap_uint32(page_no);
+#endif
     sha.update((const uint8_t*) &page_no, 4);
     sha.digest();
     for (int i = 0; i < 16; ++i)
