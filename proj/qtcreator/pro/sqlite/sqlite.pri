@@ -13,4 +13,5 @@ INCLUDEPATH += $${SRC_ROOT}
 
 HEADERS += $$files($${SRC_ROOT}/*.h, true)
 
-SOURCES += $$files($${SRC_ROOT}/*.c*, true)
+# NOTE 要排除 shell.c
+SOURCES += $${SRC_ROOT}/sqlite3.c

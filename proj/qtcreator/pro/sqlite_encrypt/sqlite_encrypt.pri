@@ -19,9 +19,8 @@ HEADERS += \
     $$files($${SRC_ROOT}/*.h, true)
 
 # HACK "sqlite3.c" 被包含在了 "codecext.c" 中
-SOURCES += \
-    $${SQLITE_SRC_PATH}/shell.c \
-    $$files($${SRC_ROOT}/*.c*, true)
+# NOTE 要排除 sqlite/shell.c
+SOURCES += $$files($${SRC_ROOT}/*.c*, true)
 
 # 链接库
 mac {

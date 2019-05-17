@@ -21,8 +21,8 @@ HEADERS += \
     $$files($${SRC_ROOT}/*.h, true)
 
 # HACK "sqlite3.c" 被包含在了 "codecext.c" 中
+# NOTE 要排除 sqlite/shell.c
 SOURCES += \
-    $${SQLITE_SRC_PATH}/shell.c \
     $$files($${SQLITE_ENCRYPT_SRC_PATH}/*.c*, true) \
     $$files($${SRC_ROOT}/*.c*, true)
 
