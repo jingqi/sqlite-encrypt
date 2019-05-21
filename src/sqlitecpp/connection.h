@@ -58,9 +58,6 @@ public:
 
     bool is_valid() const;
 
-    bool is_auto_commit() const;
-    void set_auto_commit(bool b);
-
     bool is_throw_exceptions() const;
     void set_throw_exceptions(bool b);
 
@@ -98,7 +95,6 @@ private:
 
 private:
     sqlite3 *_sqlite = nullptr;
-    bool _auto_commit = true;
     bool _throw_exceptions = false;
     int _last_error = SQLITE_OK;
     std::string _last_error_msg;

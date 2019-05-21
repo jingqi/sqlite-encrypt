@@ -154,16 +154,6 @@ bool Connection::is_valid() const
     return nullptr != _sqlite;
 }
 
-bool Connection::is_auto_commit() const
-{
-    return _auto_commit;
-}
-
-void Connection::set_auto_commit(bool b)
-{
-    _auto_commit = b;
-}
-
 bool Connection::is_throw_exceptions() const
 {
     return _throw_exceptions;
@@ -232,19 +222,13 @@ bool Connection::execute_update(const char *sql)
 {
     assert(nullptr != sql && is_valid());
     char *msg = nullptr;
-    if (_auto_commit)
-        start();
     const int rs = ::sqlite3_exec(_sqlite, sql, nullptr, nullptr, &msg);
     Sqlite3Freer _g(msg);
     if (SQLITE_OK != rs)
     {
-        if (_auto_commit)
-            rollback();
         on_error(rs, msg);
         return false;
     }
-    if (_auto_commit)
-        commit();
     return true;
 }
 
@@ -294,18 +278,12 @@ bool Connection::execute_update(
 #undef __BIND
 
     // 执行
-    if (_auto_commit)
-        start();
     const int irs = ::sqlite3_step(stmt->get_raw_stmt());
     if (SQLITE_DONE != irs)
     {
-        if (_auto_commit)
-            rollback();
         on_error(irs);
         return false;
     }
-    if (_auto_commit)
-        commit();
     return true;
 }
 
@@ -338,18 +316,12 @@ bool Connection::execute_update(const char *sql, const std::vector<Param>& args)
         }
     }
     // 执行
-    if (_auto_commit)
-        start();
     const int irs = ::sqlite3_step(stmt->get_raw_stmt());
     if (SQLITE_DONE != irs)
     {
-        if (_auto_commit)
-            rollback();
         on_error(irs);
         return false;
     }
-    if (_auto_commit)
-        commit();
     return true;
 }
 
