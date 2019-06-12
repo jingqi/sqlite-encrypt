@@ -22,30 +22,30 @@ class Statement
 
 public:
     Statement() = default;
-    Statement(sqlite3 *db, const char *sql);
+    Statement(sqlite3 *db, const char *sql) noexcept;
 
-    ~Statement();
+    ~Statement() noexcept;
 
-    bool prepare(sqlite3 *db, const char *sql);
+    bool prepare(sqlite3 *db, const char *sql) noexcept;
 
-    bool is_valid() const;
+    bool is_valid() const noexcept;
 
     /**
      * Reset so we can re-query
      */
-    bool reset();
+    bool reset() noexcept;
 
     /**
      * Make it invalid
      */
-    void clear();
+    void clear() noexcept;
 
     /**
      * @param pos 1-based
      */
-    bool bind(int pos, const Param& param);
+    bool bind(int pos, const Param& param) noexcept;
 
-    sqlite3_stmt* get_raw_stmt();
+    sqlite3_stmt* get_raw_stmt() noexcept;
 
 private:
     sqlite3_stmt *_stmt = nullptr;

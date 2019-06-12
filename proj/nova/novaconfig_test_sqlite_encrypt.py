@@ -73,17 +73,6 @@ ns.set_recipe(program, compile_c.link_program)
 ns.set_default_target(program)
 
 # run
-if platform.system() == 'Windows':
-    libgcc = 'libgcc_s_dw2-1.dll'
-    libgcc_path = join(out_root, libgcc)
-    ns.add_chained_deps('@run', libgcc_path, join(dirname(ns['CC']), libgcc))
-    ns.set_recipe(libgcc_path, file_op.copyfile)
-
-    libstdcpp = 'libstdc++-6.dll'
-    libstdcpp_path = join(out_root, libstdcpp)
-    ns.add_chained_deps('@run', libstdcpp_path, join(dirname(ns['CC']), libstdcpp))
-    ns.set_recipe(libstdcpp_path, file_op.copyfile)
-
 def run(target):
     p = Popen([program], cwd=dirname(program))
     p.wait()

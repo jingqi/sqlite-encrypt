@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
     char * error = 0;
 
     if (Path::exists(dbname))
-        OS::remove_file(dbname);
+        OS::removefile(dbname);
 
     fprintf(stderr, "Creating Database \"%s\"\n", dbname);
     int rc = sqlite3_open(dbname, &db);

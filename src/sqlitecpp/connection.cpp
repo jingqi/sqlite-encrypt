@@ -16,18 +16,18 @@ namespace
 class Sqlite3Freer
 {
 public:
-    explicit Sqlite3Freer(void *p = nullptr)
+    explicit Sqlite3Freer(void *p = nullptr) noexcept
         : _ptr(p)
     {}
 
-    ~Sqlite3Freer()
+    ~Sqlite3Freer() noexcept
     {
         if (nullptr != _ptr)
             ::sqlite3_free(_ptr);
         _ptr = nullptr;
     }
 
-    void attach(void *p)
+    void attach(void *p) noexcept
     {
         _ptr = p;
     }
@@ -42,7 +42,7 @@ private:
 
 }
 
-Connection::Connection(sqlite3 *db)
+Connection::Connection(sqlite3 *db) noexcept
     : _sqlite(db)
 {
     assert(nullptr != db);
@@ -144,32 +144,32 @@ bool Connection::change_key(const char *key, int key_len)
 }
 #endif
 
-sqlite3* Connection::get_raw_db() const
+sqlite3* Connection::get_raw_db() const noexcept
 {
     return _sqlite;
 }
 
-bool Connection::is_valid() const
+bool Connection::is_valid() const noexcept
 {
     return nullptr != _sqlite;
 }
 
-bool Connection::is_throw_exceptions() const
+bool Connection::is_throw_exceptions() const noexcept
 {
     return _throw_exceptions;
 }
 
-void Connection::set_throw_exceptions(bool b)
+void Connection::set_throw_exceptions(bool b) noexcept
 {
     _throw_exceptions = b;
 }
 
-int Connection::get_last_error_code() const
+int Connection::get_last_error_code() const noexcept
 {
     return _last_error;
 }
 
-const std::string& Connection::get_last_error_msg() const
+const std::string& Connection::get_last_error_msg() const noexcept
 {
     return _last_error_msg;
 }
@@ -374,7 +374,7 @@ nut::rc_ptr<ResultSet> Connection::execute_query(
     return nut::rc_new<ResultSet>(stmt);
 }
 
-nut::rc_ptr<ResultSet> Connection::execute_query(const char *sql, const std::vector<Param>& args)
+nut::rc_ptr<ResultSet> Connection::execute_query(const char *sql, const std::vector<Param>& args) noexcept(false)
 {
     assert(nullptr != sql && is_valid());
 
@@ -407,7 +407,7 @@ nut::rc_ptr<ResultSet> Connection::execute_query(const char *sql, const std::vec
     return nut::rc_new<ResultSet>(stmt);
 }
 
-void Connection::on_error(int err, const char *msg)
+void Connection::on_error(int err, const char *msg) noexcept(false)
 {
     _last_error = err;
     if (SQLITE_OK == err && nullptr != _sqlite)
@@ -423,7 +423,7 @@ void Connection::on_error(int err, const char *msg)
     _last_error_msg = (nullptr == msg ? "no error detected" : msg);
 
     if (_throw_exceptions)
-        throw nut::ExceptionA(_last_error, _last_error_msg, __FILE__, __LINE__, __FUNCTION__);
+        throw nut::Exception(_last_error, _last_error_msg, __FILE__, __LINE__, __FUNCTION__);
 }
 
 }

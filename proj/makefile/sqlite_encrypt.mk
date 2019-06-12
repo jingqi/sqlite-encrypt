@@ -44,16 +44,6 @@ ${NUT_PATH}/proj/makefile/${OUT_DIR_NAME}/libnut.${DL_SUFFIX}:
 ${OUT_DIR}/libnut.${DL_SUFFIX}: ${NUT_PATH}/proj/makefile/${OUT_DIR_NAME}/libnut.${DL_SUFFIX}
 	cp -f $< $@
 
-# Extra depends
-OBJS += ${OBJ_ROOT}/shell.o
-DEPS += ${OBJ_ROOT}/shell.d
-
-${OBJ_ROOT}/shell.o: ${SQLITE_SRC_PATH}/shell.c
-	$(make-c-obj)
-
-${OBJ_ROOT}/shell.d: ${SQLITE_SRC_PATH}/shell.c
-	$(make-c-dep)
-
 # Rules
 include ${NUT_PATH}/proj/makefile/common_rules.mk
 include ${NUT_PATH}/proj/makefile/shared_lib_rules.mk

@@ -4,11 +4,11 @@
 
 #include <nut/platform/platform.h>
 
+
 #if defined(BUILDING_SQLITECPP)
 #   define NUT_API DLL_EXPORT
 #else
 #   define NUT_API DLL_IMPORT
 #endif
-
 
 #endif

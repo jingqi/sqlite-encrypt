@@ -12,7 +12,7 @@ using namespace sqlitecpp;
 
 class TestSqlitecpp : public TestFixture
 {
-    virtual void register_cases() override
+    virtual void register_cases() noexcept override
     {
         NUT_REGISTER_CASE(test_smoke);
     }
@@ -20,13 +20,13 @@ class TestSqlitecpp : public TestFixture
     virtual void set_up() override
     {
         if (Path::exists(DBNAME))
-            OS::remove_file(DBNAME);
+            OS::removefile(DBNAME);
     }
 
     virtual void tear_down() override
     {
         if (Path::exists(DBNAME))
-            OS::remove_file(DBNAME);
+            OS::removefile(DBNAME);
     }
 
     void test_smoke()
@@ -36,7 +36,6 @@ class TestSqlitecpp : public TestFixture
         conn->set_key("passwd");
         NUT_TA(SQLITE_OK == conn->get_last_error_code());
 
-        conn->set_auto_commit(true);
         conn->execute_update(
             "CREATE TABLE 'test' ("
                 "id INTEGER PRIMARY KEY,"

@@ -30,6 +30,10 @@ rebuild:
 	$(MAKE) -f sqlite.mk clean
 	$(MAKE) -f sqlite.mk all
 
+# NOTE shell.c 含有 main() 函数，应该去除
+OBJS := ${OBJ_ROOT}/sqlite3.o
+DEPS := ${OBJ_ROOT}/sqlite3.d
+
 # Rules
 include ${NUT_PATH}/proj/makefile/common_rules.mk
 include ${NUT_PATH}/proj/makefile/shared_lib_rules.mk

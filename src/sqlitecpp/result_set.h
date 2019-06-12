@@ -20,46 +20,46 @@ class ResultSet
 
 public:
     ResultSet() = default;
-    explicit ResultSet(Statement *stmt);
+    explicit ResultSet(Statement *stmt) noexcept;
 
     /**
      * 获取下一组数据
      */
-    bool next();
+    bool next() noexcept;
 
     /**
      * @param column_index 0-based
      * @return SQLITE_INTEGER, SQLITE_FLOAT, SQLITE_TEXT, SQLITE_BLOB, or SQLITE_NULL
      */
-    int get_type(int column_index);
-    int get_type(const char *column_name);
+    int get_type(int column_index) noexcept;
+    int get_type(const char *column_name) noexcept;
 
     /**
      * @param column_index 0-based
      */
-    int get_int(int column_index);
-    int get_int(const char *column_name);
+    int get_int(int column_index) noexcept;
+    int get_int(const char *column_name) noexcept;
 
     /**
      * @param column_index 0-based
      */
-    int64_t get_int64(int column_index);
-    int64_t get_int64(const char *column_name);
+    int64_t get_int64(int column_index) noexcept;
+    int64_t get_int64(const char *column_name) noexcept;
 
     /**
      * @param column_index 0-based
      */
-    double get_double(int column_index);
-    double get_double(const char *column_name);
+    double get_double(int column_index) noexcept;
+    double get_double(const char *column_name) noexcept;
 
     /**
      * @param column_index 0-based
      */
-    std::string get_string(int column_index);
-    std::string get_string(const char *column_name);
+    std::string get_string(int column_index) noexcept;
+    std::string get_string(const char *column_name) noexcept;
 
 private:
-    int get_column_index(const char *column_name);
+    int get_column_index(const char *column_name) noexcept;
 
 private:
     nut::rc_ptr<Statement> _stmt;

@@ -25,19 +25,19 @@ public:
     };
 
 public:
-    Param(int arg);
-    Param(int64_t arg);
-    Param(double arg);
-    Param(const char *arg);
-    Param(std::string&& arg);
-    Param(const std::string& arg);
+    Param(int arg) noexcept;
+    Param(int64_t arg) noexcept;
+    Param(double arg) noexcept;
+    Param(const char *arg) noexcept;
+    Param(std::string&& arg) noexcept;
+    Param(const std::string& arg) noexcept;
 
-    static const Param& null();
+    static const Param& null() noexcept;
 
-    static const Param& nop();
+    static const Param& nop() noexcept;
 
 private:
-    Param(Type type_);
+    Param(Type type_) noexcept;
 
 public:
     Type type = Type::NOP;

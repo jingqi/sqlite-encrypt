@@ -19,38 +19,46 @@
 #   endif
 #endif
 
+#ifndef NOEXCEPT
+#   ifdef __cplusplus
+#       define NOEXCEPT noexcept
+#   else
+#       define NOEXCEPT
+#   endif
+#endif
+
 
 #ifdef __cplusplus
 class Codec
 {
 public:
-    Codec(void *db);
-    Codec(const Codec *another, void *db);
-    ~Codec();
+    Codec(void *db) noexcept;
+    Codec(const Codec *another, void *db) noexcept;
+    ~Codec() noexcept;
 
-    void set_page_size(size_t page_size);
+    void set_page_size(size_t page_size) noexcept;
 
-    void generate_write_key(const char *user_password, size_t password_length);
-    void generate_read_key(const char *user_password, size_t password_length);
+    void generate_write_key(const char *user_password, size_t password_length) noexcept;
+    void generate_read_key(const char *user_password, size_t password_length) noexcept;
 
-    void drop_write_key();
-    void set_write_is_read();
-    void set_read_is_write();
+    void drop_write_key() noexcept;
+    void set_write_is_read() noexcept;
+    void set_read_is_write() noexcept;
 
-    bool has_write_key() const;
-    bool has_read_key() const;
+    bool has_write_key() const noexcept;
+    bool has_read_key() const noexcept;
 
-    void *get_db() const;
-    const char* get_and_reset_error();
+    void *get_db() const noexcept;
+    const char* get_and_reset_error() noexcept;
 
-    uint8_t* encrypt(uint32_t page_no, const uint8_t *data, bool use_write_key);
-    void decrypt(uint32_t page_no, uint8_t *data);
+    uint8_t* encrypt(uint32_t page_no, const uint8_t *data, bool use_write_key) noexcept;
+    void decrypt(uint32_t page_no, uint8_t *data) noexcept;
 
 private:
     Codec(const Codec&) = delete;
     Codec& operator=(const Codec&) = delete;
 
-    void get_page_iv(uint32_t page_no, bool use_write_key, uint8_t iv[16]);
+    void get_page_iv(uint32_t page_no, bool use_write_key, uint8_t iv[16]) noexcept;
 
 private:
     void *_db = nullptr;
@@ -67,27 +75,27 @@ private:
 
 /*******************************************************************************/
 
-EXTERN_C void* codec_new(void *db);
-EXTERN_C void* codec_new_from_other(const void *other_codec, void *db);
+EXTERN_C void* codec_new(void *db) NOEXCEPT;
+EXTERN_C void* codec_new_from_other(const void *other_codec, void *db) NOEXCEPT;
 
-EXTERN_C void codec_delete(void *codec);
+EXTERN_C void codec_delete(void *codec) NOEXCEPT;
 
-EXTERN_C void codec_generate_write_key(void *codec, const char *user_password, size_t password_length);
-EXTERN_C void codec_drop_write_key(void *codec);
+EXTERN_C void codec_generate_write_key(void *codec, const char *user_password, size_t password_length) NOEXCEPT;
+EXTERN_C void codec_drop_write_key(void *codec) NOEXCEPT;
 
-EXTERN_C void codec_set_write_is_read(void *codec);
-EXTERN_C void codec_set_read_is_write(void *codec);
+EXTERN_C void codec_set_write_is_read(void *codec) NOEXCEPT;
+EXTERN_C void codec_set_read_is_write(void *codec) NOEXCEPT;
 
-EXTERN_C unsigned char* codec_encrypt(void *codec, uint32_t page_no, const uint8_t *data, bool use_write_key);
-EXTERN_C void codec_decrypt(void *codec, uint32_t page_no, uint8_t *data);
+EXTERN_C unsigned char* codec_encrypt(void *codec, uint32_t page_no, const uint8_t *data, bool use_write_key) NOEXCEPT;
+EXTERN_C void codec_decrypt(void *codec, uint32_t page_no, uint8_t *data) NOEXCEPT;
 
-EXTERN_C void codec_set_page_size(void *codec, size_t page_size);
+EXTERN_C void codec_set_page_size(void *codec, size_t page_size) NOEXCEPT;
 
-EXTERN_C bool codec_has_read_key(void *codec);
-EXTERN_C bool codec_has_write_key(void *codec);
+EXTERN_C bool codec_has_read_key(void *codec) NOEXCEPT;
+EXTERN_C bool codec_has_write_key(void *codec) NOEXCEPT;
 
-EXTERN_C void* codec_get_db(void *codec);
+EXTERN_C void* codec_get_db(void *codec) NOEXCEPT;
 
-EXTERN_C const char* codec_get_and_reset_error(void *codec);
+EXTERN_C const char* codec_get_and_reset_error(void *codec) NOEXCEPT;
 
 #endif

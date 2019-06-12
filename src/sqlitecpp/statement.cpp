@@ -5,18 +5,18 @@
 namespace sqlitecpp
 {
 
-Statement::Statement(sqlite3 *db, const char *sql)
+Statement::Statement(sqlite3 *db, const char *sql) noexcept
 {
     assert(nullptr != db && nullptr != sql);
     prepare(db, sql);
 }
 
-Statement::~Statement()
+Statement::~Statement() noexcept
 {
     clear();
 }
 
-bool Statement::prepare(sqlite3 *db, const char *sql)
+bool Statement::prepare(sqlite3 *db, const char *sql) noexcept
 {
     assert(nullptr != db && nullptr != sql);
     clear();
@@ -26,19 +26,19 @@ bool Statement::prepare(sqlite3 *db, const char *sql)
     return true;
 }
 
-bool Statement::is_valid() const
+bool Statement::is_valid() const noexcept
 {
     return nullptr != _stmt;
 }
 
-bool Statement::reset()
+bool Statement::reset() noexcept
 {
     assert(is_valid());
     _strings.clear();
     return SQLITE_OK == ::sqlite3_reset(_stmt);
 }
 
-void Statement::clear()
+void Statement::clear() noexcept
 {
     _strings.clear();
     if (nullptr != _stmt)
@@ -50,7 +50,7 @@ void Statement::clear()
     }
 }
 
-bool Statement::bind(int pos, const Param& param)
+bool Statement::bind(int pos, const Param& param) noexcept
 {
     assert(is_valid());
     switch (param.type)
@@ -84,7 +84,7 @@ bool Statement::bind(int pos, const Param& param)
     }
 }
 
-sqlite3_stmt* Statement::get_raw_stmt()
+sqlite3_stmt* Statement::get_raw_stmt() noexcept
 {
     return _stmt;
 }

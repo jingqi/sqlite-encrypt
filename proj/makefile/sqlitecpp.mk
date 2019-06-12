@@ -46,14 +46,8 @@ ${OUT_DIR}/libnut.${DL_SUFFIX}: ${NUT_PATH}/proj/makefile/${OUT_DIR_NAME}/libnut
 	cp -f $< $@
 
 # Extra depends
-OBJS += ${OBJ_ROOT}/shell.o ${OBJ_ROOT}/codec.o ${OBJ_ROOT}/codecext.o
-DEPS += ${OBJ_ROOT}/shell.d ${OBJ_ROOT}/codec.d ${OBJ_ROOT}/codecext.d
-
-${OBJ_ROOT}/shell.o: ${SQLITE_SRC_PATH}/shell.c
-	$(make-c-obj)
-
-${OBJ_ROOT}/shell.d: ${SQLITE_SRC_PATH}/shell.c
-	$(make-c-dep)
+OBJS += ${OBJ_ROOT}/codec.o ${OBJ_ROOT}/codecext.o
+DEPS += ${OBJ_ROOT}/codec.d ${OBJ_ROOT}/codecext.d
 
 ${OBJ_ROOT}/codec.o: ${SQLITE_ENCRYPT_SRC_PATH}/codec.cpp
 	$(make-cxx-obj)

@@ -24,7 +24,7 @@ class Connection
 
 public:
     Connection() = default;
-    explicit Connection(sqlite3 *db);
+    explicit Connection(sqlite3 *db) noexcept;
 
     /**
      * @param db_file File path encoded in UTF-8
@@ -54,15 +54,15 @@ public:
     bool change_key(const char *key, int key_len = -1);
 #endif
 
-    sqlite3* get_raw_db() const;
+    sqlite3* get_raw_db() const noexcept;
 
-    bool is_valid() const;
+    bool is_valid() const noexcept;
 
-    bool is_throw_exceptions() const;
-    void set_throw_exceptions(bool b);
+    bool is_throw_exceptions() const noexcept;
+    void set_throw_exceptions(bool b) noexcept;
 
-    int get_last_error_code() const;
-    const std::string& get_last_error_msg() const;
+    int get_last_error_code() const noexcept;
+    const std::string& get_last_error_msg() const noexcept;
 
     bool start();
     bool commit();
