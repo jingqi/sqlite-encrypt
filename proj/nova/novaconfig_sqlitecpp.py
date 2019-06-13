@@ -26,7 +26,7 @@ include_root = join(out_root, 'include')
 header_root = join(include_root, 'sqlitecpp')
 
 ## Flags
-ns.append_env_flags('CPPFLAGS', '-DSQLITE_HAS_CODEC',
+ns.append_env_flags('CPPFLAGS', '-DBUILDING_SQLITECPP', '-DBUILDING_SQLITE_ENCRYPT',
                     '-I' + realpath(include_root),
                     '-I' + realpath(sqlite_src_root),
                     '-I' + realpath(join(nut_proj_root, out_dir, 'include')))

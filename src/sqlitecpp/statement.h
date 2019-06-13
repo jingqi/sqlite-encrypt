@@ -4,11 +4,13 @@
 
 #include <vector>
 #include <string>
-#include <sqlite3.h>
 
 #include <nut/platform/platform.h>
 #include <nut/rc/rc_new.h>
 #include <nut/rc/enrc.h>
+
+#include "sqlitecpp_config.h"
+#include <sqlite3.h>
 
 #include "param.h"
 
@@ -16,7 +18,7 @@
 namespace sqlitecpp
 {
 
-class Statement
+class SQLITECPP_API Statement
 {
     NUT_REF_COUNTABLE
 

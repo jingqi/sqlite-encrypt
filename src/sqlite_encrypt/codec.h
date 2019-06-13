@@ -11,13 +11,8 @@
 #   include <stdbool.h>
 #endif
 
-#ifndef EXTERN_C
-#   ifdef __cplusplus
-#       define EXTERN_C extern "C"
-#   else
-#       define EXTERN_C extern
-#   endif
-#endif
+#include <nut/platform/platform.h>
+
 
 #ifndef NOEXCEPT
 #   ifdef __cplusplus
@@ -26,7 +21,6 @@
 #       define NOEXCEPT
 #   endif
 #endif
-
 
 #ifdef __cplusplus
 class Codec

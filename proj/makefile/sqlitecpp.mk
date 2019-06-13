@@ -12,7 +12,7 @@ include ${NUT_PATH}/proj/makefile/preface_rules.mk
 CPPFLAGS += -I${SRC_ROOT}/.. -I${SQLITE_SRC_PATH} -I${NUT_PATH}/src
 
 # Defines
-CPPFLAGS += -DSQLITE_HAS_CODEC
+CPPFLAGS += -DBUILDING_SQLITECPP -DBUILDING_SQLITE_ENCRYPT
 
 # C/C++ standard
 CFLAGS += -std=c11

@@ -7,7 +7,7 @@ include(../sqlite_encrypt_common.pri)
 
 CONFIG -= qt
 
-DEFINES += SQLITE_HAS_CODEC
+DEFINES += BUILDING_SQLITE_ENCRYPT
 
 SQLITE_SRC_PATH = $$PWD/../../../../src/sqlite
 SRC_ROOT = $$PWD/../../../../src/sqlite_encrypt

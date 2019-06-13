@@ -8,7 +8,7 @@ QT -= qt
 CONFIG += console
 CONFIG -= app_bundle
 
-DEFINES += SQLITE_HAS_CODEC
+DEFINES +=
 
 SRC_ROOT = $$PWD/../../../../src/test_sqlite_encrypt
 INCLUDEPATH += $${SRC_ROOT}

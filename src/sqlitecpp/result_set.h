@@ -8,13 +8,14 @@
 
 #include <nut/rc/rc_new.h>
 
+#include "sqlitecpp_config.h"
 #include "statement.h"
 
 
 namespace sqlitecpp
 {
 
-class ResultSet
+class SQLITECPP_API ResultSet
 {
     NUT_REF_COUNTABLE
 

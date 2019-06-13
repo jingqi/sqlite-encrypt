@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#define SQLITE_HAS_CODEC
 #include <sqlite3.h>
 
 #include <nut/platform/os.h>

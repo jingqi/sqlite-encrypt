@@ -7,11 +7,13 @@
 
 #include <nut/rc/enrc.h>
 
+#include "sqlitecpp_config.h"
+
 
 namespace sqlitecpp
 {
 
-class Param
+class SQLITECPP_API Param
 {
 public:
     enum class Type

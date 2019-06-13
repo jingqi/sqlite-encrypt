@@ -6,9 +6,14 @@
 
 
 #if defined(BUILDING_SQLITECPP)
-#   define NUT_API DLL_EXPORT
+#   define SQLITE_API    DLL_EXPORT
+#   define SQLITECPP_API DLL_EXPORT
 #else
-#   define NUT_API DLL_IMPORT
+#   define SQLITE_API    DLL_IMPORT
+#   define SQLITECPP_API DLL_IMPORT
 #endif
+
+// 开启 sqlite3 加密接口
+#define SQLITE_HAS_CODEC 1
 
 #endif

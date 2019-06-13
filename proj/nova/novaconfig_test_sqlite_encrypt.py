@@ -24,7 +24,7 @@ header_root = join(out_root, 'include/test_sqlite_encrypt')
 nut_proj_root = join(ns.getenv('NUT_PATH', join(CWD, '../../lib/nut.git')), 'proj/nova')
 
 ## Flags
-ns.append_env_flags('CPPFLAGS', '-DSQLITE_HAS_CODEC',
+ns.append_env_flags('CPPFLAGS',
                     '-I' + realpath(join(out_root, 'include')),
                     '-I' + realpath(join(out_root, 'include/sqlite_encrypt')),
                     '-I' + realpath(join(nut_proj_root, out_dir, 'include')))

@@ -4,6 +4,9 @@
 
 #include "sqlitecpp_config.h"
 
+#include <sqlite3.h>
+#include <sqlite3ext.h>
+
 #include "param.h"
 #include "result_set.h"
 #include "statement.h"

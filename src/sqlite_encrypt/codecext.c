@@ -5,8 +5,7 @@
  *    https://github.com/OlivierJG/botansqlite3
  */
 
-// 开启 sqlite3 加密接口
-#define SQLITE_HAS_CODEC 1
+#include "sqlite_encrypt_config.h"
 
 // HACK 黑科技，不直接编译 "sqlite3.c", 而是放到这里，从而可以使用 sqlite 内部的结构体定义
 #include "sqlite3.c"

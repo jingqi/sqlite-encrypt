@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="sqlite_encrypt">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="sqlite">
+      <UniqueIdentifier>{7a25d744-2e2c-4fb8-ac4e-38d045f9aa94}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\sqlite_encrypt\codec.cpp">
+      <Filter>sqlite_encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sqlite_encrypt\codecext.c">
+      <Filter>sqlite_encrypt</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\sqlite_encrypt\codec.h">
+      <Filter>sqlite_encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sqlite\sqlite3.h">
+      <Filter>sqlite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sqlite\sqlite3ext.h">
+      <Filter>sqlite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sqlite_encrypt\sqlite_encrypt.h">
+      <Filter>sqlite_encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sqlite_encrypt\sqlite_encrypt_config.h">
+      <Filter>sqlite_encrypt</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

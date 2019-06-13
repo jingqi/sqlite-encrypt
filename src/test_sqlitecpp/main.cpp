@@ -1,5 +1,6 @@
 ﻿
 #include <nut/nut.h>
+#include <sqlitecpp/sqlitecpp.h>
 
 
 using namespace nut;

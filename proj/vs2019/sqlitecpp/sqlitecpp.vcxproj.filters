@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="sqlitecpp">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="sqlite_encrypt">
+      <UniqueIdentifier>{ba3f2881-9d92-4681-a069-c2bd293e7bc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sqlite">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\sqlite\sqlite3.h">
+      <Filter>sqlite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sqlite\sqlite3ext.h">
+      <Filter>sqlite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sqlitecpp\connection.h">
+      <Filter>sqlitecpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sqlitecpp\param.h">
+      <Filter>sqlitecpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sqlitecpp\result_set.h">
+      <Filter>sqlitecpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sqlitecpp\sqlitecpp.h">
+      <Filter>sqlitecpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sqlitecpp\sqlitecpp_config.h">
+      <Filter>sqlitecpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sqlitecpp\statement.h">
+      <Filter>sqlitecpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sqlite_encrypt\codec.h">
+      <Filter>sqlite_encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sqlite_encrypt\sqlite_encrypt.h">
+      <Filter>sqlite_encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sqlite_encrypt\sqlite_encrypt_config.h">
+      <Filter>sqlite_encrypt</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\sqlitecpp\connection.cpp">
+      <Filter>sqlitecpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sqlitecpp\param.cpp">
+      <Filter>sqlitecpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sqlitecpp\result_set.cpp">
+      <Filter>sqlitecpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sqlitecpp\statement.cpp">
+      <Filter>sqlitecpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sqlite_encrypt\codec.cpp">
+      <Filter>sqlite_encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sqlite_encrypt\codecext.c">
+      <Filter>sqlite_encrypt</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

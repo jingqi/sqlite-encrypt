@@ -4,11 +4,11 @@
 
 #include <vector>
 
-#define SQLITE_HAS_CODEC 1
-#include <sqlite3.h>
-
 #include <nut/platform/platform.h>
 #include <nut/rc/rc_ptr.h>
+
+#include "sqlitecpp_config.h"
+#include <sqlite3.h>
 
 #include "param.h"
 #include "statement.h"
@@ -18,7 +18,7 @@
 namespace sqlitecpp
 {
 
-class Connection
+class SQLITECPP_API Connection
 {
     NUT_REF_COUNTABLE
 
