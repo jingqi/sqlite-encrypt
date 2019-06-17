@@ -6,6 +6,7 @@
 #include <string>
 
 #include <nut/rc/enrc.h>
+#include <nut/time/date_time.h>
 
 #include "sqlitecpp_config.h"
 
@@ -35,8 +36,10 @@ public:
     Param(const std::string& arg) noexcept;
 
     static const Param& null() noexcept;
-
     static const Param& nop() noexcept;
+
+    static std::string datetime_to_str(const nut::DateTime& dt, bool utc = false);
+    static nut::DateTime str_to_datetime(const char *s, bool utc = false);
 
 private:
     Param(Type type_) noexcept;

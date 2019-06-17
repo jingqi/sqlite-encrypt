@@ -4,11 +4,11 @@
 
 #include <string>
 
-#include <sqlite3.h>
-
 #include <nut/rc/rc_new.h>
 
 #include "sqlitecpp_config.h"
+#include <sqlite3.h>
+
 #include "statement.h"
 
 
