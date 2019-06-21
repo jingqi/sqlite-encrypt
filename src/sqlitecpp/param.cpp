@@ -3,6 +3,7 @@
 #include <regex>
 
 #include <nut/rc/rc_new.h>
+#include <nut/util/string/string_utils.h>
 
 #include "param.h"
 
@@ -63,7 +64,7 @@ nut::DateTime Param::str_to_datetime(const char* s, bool utc)
     ret.set(0); // null
     if (nullptr == s || 0 == s[0])
         return ret;
-    if (0 == ::strcasecmp(s, "NULL"))
+    if (0 == nut::stricmp(s, "NULL"))
         return ret;
 
     // 匹配 "2018-09-03 00:31:16.93144"
