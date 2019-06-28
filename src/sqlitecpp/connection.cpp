@@ -77,9 +77,9 @@ bool Connection::open(const char *db_file)
         UNUSED(rs);
     }
 
+    clear_error();
+
     // Open new database
-    _last_error = SQLITE_OK;
-    _last_error_msg.clear();
     _sqlite = nullptr;
     const int rs = ::sqlite3_open(db_file, &_sqlite);
     if (SQLITE_OK != rs)
@@ -102,6 +102,8 @@ bool Connection::close()
     if (nullptr == _sqlite)
         return true;
 
+    clear_error();
+
     const int rs = ::sqlite3_close(_sqlite);
     if (SQLITE_OK != rs)
         on_error(rs);
@@ -119,6 +121,8 @@ bool Connection::set_key(const char *key, int key_len)
     assert(nullptr != key);
     assert(is_valid());
 
+    clear_error();
+
     if(key_len < 0)
         key_len = ::strlen(key);
     const int rs = ::sqlite3_key(_sqlite, key, key_len);
@@ -135,6 +139,8 @@ bool Connection::change_key(const char *key, int key_len)
     assert(nullptr != key);
     assert(is_valid());
 
+    clear_error();
+
     if (key_len < 0)
         key_len = ::strlen(key);
     const int rs = ::sqlite3_rekey(_sqlite, key, key_len);
@@ -144,7 +150,7 @@ bool Connection::change_key(const char *key, int key_len)
 }
 #endif
 
-sqlite3* Connection::get_raw_db() const noexcept
+sqlite3* Connection::inner_db() const noexcept
 {
     return _sqlite;
 }
@@ -177,6 +183,9 @@ const std::string& Connection::get_last_error_msg() const noexcept
 bool Connection::start()
 {
     assert(is_valid());
+
+    clear_error();
+
     char *msg = nullptr;
     const int rs = ::sqlite3_exec(_sqlite, "begin;", nullptr, nullptr, &msg);
     Sqlite3Freer _g(msg);
@@ -188,6 +197,9 @@ bool Connection::start()
 bool Connection::commit()
 {
     assert(is_valid());
+
+    clear_error();
+
     char *msg = nullptr;
     const int rs = ::sqlite3_exec(_sqlite, "commit;", nullptr, nullptr, &msg);
     Sqlite3Freer _g(msg);
@@ -199,6 +211,9 @@ bool Connection::commit()
 bool Connection::rollback()
 {
     assert(is_valid());
+
+    clear_error();
+
     char *msg = nullptr;
     const int rs = ::sqlite3_exec(_sqlite, "rollback;", nullptr, nullptr, &msg);
     Sqlite3Freer _g(msg);
@@ -210,6 +225,9 @@ bool Connection::rollback()
 bool Connection::vacuum()
 {
     assert(is_valid());
+
+    clear_error();
+
     char *msg = nullptr;
     const int rs = ::sqlite3_exec(_sqlite, "vacuum;", nullptr, nullptr, &msg);
     Sqlite3Freer _g(msg);
@@ -221,6 +239,9 @@ bool Connection::vacuum()
 bool Connection::execute_update(const char *sql)
 {
     assert(nullptr != sql && is_valid());
+
+    clear_error();
+
     char *msg = nullptr;
     const int rs = ::sqlite3_exec(_sqlite, sql, nullptr, nullptr, &msg);
     Sqlite3Freer _g(msg);
@@ -239,6 +260,8 @@ bool Connection::execute_update(
 {
     assert(nullptr != sql && is_valid());
 
+    clear_error();
+
     // 预编译
     nut::rc_ptr<Statement> stmt = nut::rc_new<Statement>(_sqlite, sql);
     if (!stmt->is_valid())
@@ -248,17 +271,16 @@ bool Connection::execute_update(
     }
 
     // 绑定参数
-    bool rs = stmt->reset();
-    if (!rs)
+    if (!stmt->reset())
     {
         on_error();
         return false;
     }
 
 #define __BIND(i)                   \
-    do {                            \
-        rs = stmt->bind(i, arg##i); \
-        if (!rs)                    \
+    do                              \
+    {                               \
+        if (!stmt->bind(i, arg##i)) \
         {                           \
             on_error();             \
             return false;           \
@@ -291,6 +313,8 @@ bool Connection::execute_update(const char *sql, const std::vector<Param>& args)
 {
     assert(nullptr != sql && is_valid());
 
+    clear_error();
+
     // 预编译
     nut::rc_ptr<Statement> stmt = nut::rc_new<Statement>(_sqlite, sql);
     if (!stmt->is_valid())
@@ -300,16 +324,14 @@ bool Connection::execute_update(const char *sql, const std::vector<Param>& args)
     }
 
     // 绑定参数
-    bool rs = stmt->reset();
-    if (!rs)
+    if (!stmt->reset())
     {
         on_error();
         return false;
     }
     for (size_t i = 0, size = args.size(); i < size; ++i)
     {
-        rs = stmt->bind(i + 1, args.at(i));
-        if (!rs)
+        if (!stmt->bind(i + 1, args.at(i)))
         {
             on_error();
             return false;
@@ -332,30 +354,31 @@ nut::rc_ptr<ResultSet> Connection::execute_query(
 {
     assert(nullptr != sql && is_valid());
 
+    clear_error();
+
     // 预编译
     nut::rc_ptr<Statement> stmt = nut::rc_new<Statement>(_sqlite, sql);
     if (!stmt->is_valid())
     {
         on_error();
-        return nut::rc_new<ResultSet>();
+        return nullptr;
     }
 
     // 绑定参数
-    bool rs = stmt->reset();
-    if (!rs)
+    if (!stmt->reset())
     {
         on_error();
-        return nut::rc_new<ResultSet>();
+        return nullptr;
     }
 
-#define __BIND(i)                               \
-    do {                                        \
-        rs = stmt->bind(i, arg##i);             \
-        if (!rs)                                \
-        {                                       \
-            on_error();                         \
-            return nut::rc_new<ResultSet>();    \
-        }                                       \
+#define __BIND(i)                       \
+    do                                  \
+    {                                   \
+        if (!stmt->bind(i, arg##i))     \
+        {                               \
+            on_error();                 \
+            return nullptr;             \
+        }                               \
     } while (false)
 
     __BIND(1);
@@ -378,33 +401,39 @@ nut::rc_ptr<ResultSet> Connection::execute_query(const char *sql, const std::vec
 {
     assert(nullptr != sql && is_valid());
 
+    clear_error();
+
     // 预编译
     nut::rc_ptr<Statement> stmt = nut::rc_new<Statement>(_sqlite, sql);
     if (!stmt->is_valid())
     {
         on_error();
-        return nut::rc_new<ResultSet>();
+        return nullptr;
     }
 
     // 绑定参数
-    bool rs = stmt->reset();
-    if (!rs)
+    if (!stmt->reset())
     {
         on_error();
-        return nut::rc_new<ResultSet>();
+        return nullptr;
     }
     for (size_t i = 0, size = args.size(); i < size; ++i)
     {
-        rs = stmt->bind(i + 1, args.at(i));
-        if (!rs)
+        if (!stmt->bind(i + 1, args.at(i)))
         {
             on_error();
-            return nut::rc_new<ResultSet>();
+            return nullptr;
         }
     }
 
     // 执行
     return nut::rc_new<ResultSet>(stmt);
+}
+
+void Connection::clear_error()
+{
+    _last_error = SQLITE_OK;
+    _last_error_msg.clear();
 }
 
 void Connection::on_error(int err, const char *msg) noexcept(false)

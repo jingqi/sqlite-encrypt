@@ -54,7 +54,7 @@ public:
     bool change_key(const char *key, int key_len = -1);
 #endif
 
-    sqlite3* get_raw_db() const noexcept;
+    sqlite3* inner_db() const noexcept;
 
     bool is_valid() const noexcept;
 
@@ -73,6 +73,11 @@ public:
      */
     bool vacuum();
 
+    /**
+     * 插入、更新
+     *
+     * @return 失败则返回 false
+     */
     bool execute_update(const char *sql);
     bool execute_update(
         const char *sql, const Param& arg1, const Param& arg2 = Param::nop(),
@@ -82,6 +87,11 @@ public:
         const Param& arg9 = Param::nop());
     bool execute_update(const char *sql, const std::vector<Param>& args);
 
+    /**
+     * 查询
+     *
+     * @return 失败则返回 nullptr
+     */
     nut::rc_ptr<ResultSet> execute_query(
         const char *sql, const Param& arg1 = Param::nop(),
         const Param& arg2 = Param::nop(), const Param& arg3 = Param::nop(),
@@ -91,6 +101,7 @@ public:
     nut::rc_ptr<ResultSet> execute_query(const char *sql, const std::vector<Param>& args);
 
 private:
+    void clear_error();
     void on_error(int err = SQLITE_OK, const char *msg = nullptr);
 
 private:

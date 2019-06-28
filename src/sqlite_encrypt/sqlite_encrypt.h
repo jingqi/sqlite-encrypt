@@ -5,6 +5,5 @@
 #include "sqlite_encrypt_config.h"
 
 #include <sqlite3.h>
-#include <sqlite3ext.h>
 
 #endif
