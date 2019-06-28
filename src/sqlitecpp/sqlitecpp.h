@@ -10,5 +10,6 @@
 #include "result_set.h"
 #include "statement.h"
 #include "connection.h"
+#include "exception.h"
 
 #endif

@@ -2,8 +2,8 @@
 #include <assert.h>
 #include <string.h> // for ::strlen()
 
-#include <nut/debugging/exception.h>
 
+#include "exception.h"
 #include "connection.h"
 
 
@@ -452,7 +452,7 @@ void Connection::on_error(int err, const char *msg) noexcept(false)
     _last_error_msg = (nullptr == msg ? "no error detected" : msg);
 
     if (_throw_exceptions)
-        throw nut::Exception(_last_error, _last_error_msg, __FILE__, __LINE__, __FUNCTION__);
+        throw SqliteException(_last_error, _last_error_msg, __FILE__, __LINE__, __FUNCTION__);
 }
 
 }
