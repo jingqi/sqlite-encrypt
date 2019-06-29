@@ -6,6 +6,7 @@
 
 #include <nut/platform/platform.h>
 #include <nut/rc/rc_ptr.h>
+#include <nut/container/lru_cache.h>
 
 #include "sqlitecpp_config.h"
 #include <sqlite3.h>
@@ -18,6 +19,12 @@
 namespace sqlitecpp
 {
 
+/**
+ * sqlite 链接
+ *
+ * NOTE
+ * - 一个链接只能在一个线程中调用, 或者串行调用, 不可并发调用. 必要的情况下，可以使用连接池
+ */
 class SQLITECPP_API Connection
 {
     NUT_REF_COUNTABLE
@@ -104,11 +111,15 @@ public:
     nut::rc_ptr<ResultSet> execute_query(const char *sql, const std::vector<Param>& args);
 
 private:
+    nut::rc_ptr<Statement> prepare_stmt(const char *sql);
+
     void clear_error();
     void on_error(int err = SQLITE_OK, const char *msg = nullptr);
 
 private:
     sqlite3 *_sqlite = nullptr;
+    nut::LRUCache<std::string, nut::rc_ptr<Statement>> _cached_stmts;
+
     bool _throw_exceptions = false;
     int _last_error = SQLITE_OK;
     std::string _last_error_msg;

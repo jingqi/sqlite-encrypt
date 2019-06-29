@@ -68,8 +68,7 @@ bool Connection::open(const char *db_file)
     if (is_valid())
     {
         bool rs = close();
-        assert(rs);
-        UNUSED(rs);
+        assert(rs); UNUSED(rs);
     }
 
     clear_error();
@@ -98,6 +97,8 @@ bool Connection::close()
         return true;
 
     clear_error();
+
+    _cached_stmts.clear();
 
     const int rs = ::sqlite3_close(_sqlite);
     if (SQLITE_OK != rs)
@@ -258,12 +259,9 @@ bool Connection::execute_update(
     clear_error();
 
     // 预编译
-    nut::rc_ptr<Statement> stmt = nut::rc_new<Statement>(_sqlite, sql);
-    if (!stmt->is_valid())
-    {
-        on_error();
+    nut::rc_ptr<Statement> stmt = prepare_stmt(sql);
+    if (nullptr == stmt)
         return false;
-    }
 
     // 绑定参数
     if (!stmt->reset())
@@ -311,12 +309,9 @@ bool Connection::execute_update(const char *sql, const std::vector<Param>& args)
     clear_error();
 
     // 预编译
-    nut::rc_ptr<Statement> stmt = nut::rc_new<Statement>(_sqlite, sql);
-    if (!stmt->is_valid())
-    {
-        on_error();
+    nut::rc_ptr<Statement> stmt = prepare_stmt(sql);
+    if (nullptr == stmt)
         return false;
-    }
 
     // 绑定参数
     if (!stmt->reset())
@@ -352,12 +347,9 @@ nut::rc_ptr<ResultSet> Connection::execute_query(
     clear_error();
 
     // 预编译
-    nut::rc_ptr<Statement> stmt = nut::rc_new<Statement>(_sqlite, sql);
-    if (!stmt->is_valid())
-    {
-        on_error();
+    nut::rc_ptr<Statement> stmt = prepare_stmt(sql);
+    if (nullptr == stmt)
         return nullptr;
-    }
 
     // 绑定参数
     if (!stmt->reset())
@@ -399,12 +391,9 @@ nut::rc_ptr<ResultSet> Connection::execute_query(const char *sql, const std::vec
     clear_error();
 
     // 预编译
-    nut::rc_ptr<Statement> stmt = nut::rc_new<Statement>(_sqlite, sql);
-    if (!stmt->is_valid())
-    {
-        on_error();
+    nut::rc_ptr<Statement> stmt = prepare_stmt(sql);
+    if (nullptr == stmt)
         return nullptr;
-    }
 
     // 绑定参数
     if (!stmt->reset())
@@ -423,6 +412,25 @@ nut::rc_ptr<ResultSet> Connection::execute_query(const char *sql, const std::vec
 
     // 执行
     return nut::rc_new<ResultSet>(stmt);
+}
+
+nut::rc_ptr<Statement> Connection::prepare_stmt(const char *sql)
+{
+    assert(nullptr != sql);
+
+    std::string key(sql);
+    const nut::rc_ptr<Statement> *pstmt = _cached_stmts.get(key);
+    if (nullptr != pstmt && nullptr != *pstmt && (*pstmt)->is_valid())
+        return *pstmt;
+
+    nut::rc_ptr<Statement> stmt = nut::rc_new<Statement>(_sqlite, sql);
+    if (!stmt->is_valid())
+    {
+        on_error();
+        return nullptr;
+    }
+    _cached_stmts.put(std::move(key), stmt);
+    return stmt;
 }
 
 void Connection::clear_error()
