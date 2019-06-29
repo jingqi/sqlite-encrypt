@@ -5,6 +5,7 @@
 #include <string>
 
 #include <nut/rc/rc_new.h>
+#include <nut/time/date_time.h>
 
 #include "sqlitecpp_config.h"
 #include <sqlite3.h>
@@ -58,6 +59,12 @@ public:
      */
     std::string get_string(int column_index) noexcept;
     std::string get_string(const char *column_name) noexcept;
+
+    /**
+     * @param column_index 0-based
+     */
+    nut::DateTime get_datetime(int column_index, bool utc = false) noexcept;
+    nut::DateTime get_datetime(const char *column_name, bool utc = false) noexcept;
 
 private:
     int get_column_index(const char *column_name) noexcept;

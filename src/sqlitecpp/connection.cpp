@@ -27,11 +27,6 @@ public:
         _ptr = nullptr;
     }
 
-    void attach(void *p) noexcept
-    {
-        _ptr = p;
-    }
-
 private:
     Sqlite3Freer(const Sqlite3Freer&) = delete;
     Sqlite3Freer& operator=(const Sqlite3Freer&) = delete;
@@ -150,7 +145,7 @@ bool Connection::change_key(const char *key, int key_len)
 }
 #endif
 
-sqlite3* Connection::inner_db() const noexcept
+sqlite3* Connection::get_raw_db() const noexcept
 {
     return _sqlite;
 }
@@ -187,7 +182,7 @@ bool Connection::start()
     clear_error();
 
     char *msg = nullptr;
-    const int rs = ::sqlite3_exec(_sqlite, "begin;", nullptr, nullptr, &msg);
+    const int rs = ::sqlite3_exec(_sqlite, "BEGIN;", nullptr, nullptr, &msg);
     Sqlite3Freer _g(msg);
     if (SQLITE_OK != rs)
         on_error(rs, msg);
@@ -201,7 +196,7 @@ bool Connection::commit()
     clear_error();
 
     char *msg = nullptr;
-    const int rs = ::sqlite3_exec(_sqlite, "commit;", nullptr, nullptr, &msg);
+    const int rs = ::sqlite3_exec(_sqlite, "COMMIT;", nullptr, nullptr, &msg);
     Sqlite3Freer _g(msg);
     if (SQLITE_OK != rs)
         on_error(rs, msg);
@@ -215,7 +210,7 @@ bool Connection::rollback()
     clear_error();
 
     char *msg = nullptr;
-    const int rs = ::sqlite3_exec(_sqlite, "rollback;", nullptr, nullptr, &msg);
+    const int rs = ::sqlite3_exec(_sqlite, "ROLLBACK;", nullptr, nullptr, &msg);
     Sqlite3Freer _g(msg);
     if (SQLITE_OK != rs)
         on_error(rs, msg);
@@ -229,7 +224,7 @@ bool Connection::vacuum()
     clear_error();
 
     char *msg = nullptr;
-    const int rs = ::sqlite3_exec(_sqlite, "vacuum;", nullptr, nullptr, &msg);
+    const int rs = ::sqlite3_exec(_sqlite, "VACUUM;", nullptr, nullptr, &msg);
     Sqlite3Freer _g(msg);
     if (SQLITE_OK != rs)
         on_error(rs, msg);

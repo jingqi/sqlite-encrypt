@@ -34,18 +34,16 @@ public:
     Param(const char *arg) noexcept;
     Param(std::string&& arg) noexcept;
     Param(const std::string& arg) noexcept;
+    Param(const nut::DateTime& dt, bool utc = false) noexcept;
 
     static const Param& null() noexcept;
     static const Param& nop() noexcept;
-
-    static std::string datetime_to_str(const nut::DateTime& dt, bool utc = false);
-    static nut::DateTime str_to_datetime(const char *s, bool utc = false);
 
 private:
     Param(Type type_) noexcept;
 
 public:
-    Type type = Type::NOP;
+    const Type type = Type::NOP;
     nut::rc_ptr<nut::enrc<std::string>> str_arg;
     union
     {

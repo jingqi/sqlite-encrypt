@@ -54,7 +54,7 @@ public:
     bool change_key(const char *key, int key_len = -1);
 #endif
 
-    sqlite3* inner_db() const noexcept;
+    sqlite3* get_raw_db() const noexcept;
 
     bool is_valid() const noexcept;
 
@@ -64,6 +64,9 @@ public:
     int get_last_error_code() const noexcept;
     const std::string& get_last_error_msg() const noexcept;
 
+    /**
+     * 事务
+     */
     bool start();
     bool commit();
     bool rollback();
