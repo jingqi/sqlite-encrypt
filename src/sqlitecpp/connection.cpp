@@ -176,14 +176,15 @@ const std::string& Connection::get_last_error_msg() const noexcept
     return _last_error_msg;
 }
 
-bool Connection::start()
+bool Connection::start(bool immediate)
 {
     assert(is_valid());
 
     clear_error();
 
     char *msg = nullptr;
-    const int rs = ::sqlite3_exec(_sqlite, "BEGIN;", nullptr, nullptr, &msg);
+    const int rs = ::sqlite3_exec(
+        _sqlite, (immediate ? "BEGIN IMMEDIATE;" : "BEGIN;"), nullptr, nullptr, &msg);
     Sqlite3Freer _g(msg);
     if (SQLITE_OK != rs)
         on_error(rs, msg);

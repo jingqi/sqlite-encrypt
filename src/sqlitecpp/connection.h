@@ -74,7 +74,7 @@ public:
     /**
      * 事务
      */
-    bool start();
+    bool start(bool immediate = false);
     bool commit();
     bool rollback();
 
