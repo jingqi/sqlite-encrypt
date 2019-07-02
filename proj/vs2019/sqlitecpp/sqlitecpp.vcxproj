@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\sqlitecpp\connection.h" />
+    <ClInclude Include="..\..\..\src\sqlitecpp\exception.h" />
     <ClInclude Include="..\..\..\src\sqlitecpp\param.h" />
     <ClInclude Include="..\..\..\src\sqlitecpp\result_set.h" />
     <ClInclude Include="..\..\..\src\sqlitecpp\sqlitecpp.h" />

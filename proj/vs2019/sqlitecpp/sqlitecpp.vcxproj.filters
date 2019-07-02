@@ -47,6 +47,9 @@
     <ClInclude Include="..\..\..\src\sqlite_encrypt\sqlite_encrypt_config.h">
       <Filter>sqlite_encrypt</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\sqlitecpp\exception.h">
+      <Filter>sqlitecpp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\sqlitecpp\connection.cpp">
