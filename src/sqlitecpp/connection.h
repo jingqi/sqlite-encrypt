@@ -72,6 +72,15 @@ public:
     const std::string& get_last_error_msg() const noexcept;
 
     /**
+     * 当数据库被其他线程/进程锁定时的等待时间
+     *
+     * NOTE
+     * - 因内部是使用 busy handler 实现的，故设置后会覆盖前一个 busy handler
+     * - sqlite 出现死锁时, 无论如何都会返回 SQLITE_BUSY, 因为此时等待是无意义的
+     */
+    bool set_busy_timeout(int ms) noexcept;
+
+    /**
      * 事务
      */
     bool start(bool immediate = false);

@@ -35,6 +35,7 @@ bool Statement::reset() noexcept
 {
     assert(is_valid());
     _strings.clear();
+    ::sqlite3_clear_bindings(_stmt);
     return SQLITE_OK == ::sqlite3_reset(_stmt);
 }
 

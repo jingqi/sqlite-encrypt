@@ -2,7 +2,6 @@
 #include <assert.h>
 #include <string.h> // for ::strlen()
 
-
 #include "exception.h"
 #include "connection.h"
 
@@ -174,6 +173,14 @@ int Connection::get_last_error_code() const noexcept
 const std::string& Connection::get_last_error_msg() const noexcept
 {
     return _last_error_msg;
+}
+
+bool Connection::set_busy_timeout(int ms) noexcept
+{
+    int rs = ::sqlite3_busy_timeout(_sqlite, ms);
+    if (SQLITE_OK != rs)
+        on_error(rs);
+    return SQLITE_OK == rs;
 }
 
 bool Connection::start(bool immediate)
