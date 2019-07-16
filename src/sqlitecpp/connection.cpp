@@ -302,6 +302,7 @@ bool Connection::execute_update(
 
     // 执行
     const int irs = ::sqlite3_step(stmt->get_raw_stmt());
+    ::sqlite3_reset(stmt->get_raw_stmt()); // Release internal lock
     if (SQLITE_DONE != irs)
     {
         on_error(irs);
@@ -337,6 +338,7 @@ bool Connection::execute_update(const char *sql, const std::vector<Param>& args)
     }
     // 执行
     const int irs = ::sqlite3_step(stmt->get_raw_stmt());
+    ::sqlite3_reset(stmt->get_raw_stmt()); // Release internal lock
     if (SQLITE_DONE != irs)
     {
         on_error(irs);

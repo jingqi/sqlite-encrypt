@@ -23,6 +23,7 @@ class SQLITECPP_API ResultSet
 public:
     ResultSet() = default;
     explicit ResultSet(Statement *stmt) noexcept;
+    ~ResultSet();
 
     /**
      * 获取下一组数据

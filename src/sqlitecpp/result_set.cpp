@@ -18,6 +18,11 @@ ResultSet::ResultSet(Statement *stmt) noexcept
     assert(nullptr != stmt);
 }
 
+ResultSet::~ResultSet()
+{
+    ::sqlite3_reset(_stmt->get_raw_stmt()); // Release internal lock
+}
+
 bool ResultSet::next() noexcept
 {
     if (nullptr == _stmt)
