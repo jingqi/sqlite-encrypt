@@ -18,17 +18,15 @@
 namespace sqlitecpp
 {
 
+class Connection;
+
 class SQLITECPP_API Statement
 {
     NUT_REF_COUNTABLE
 
 public:
-    Statement() = default;
-    Statement(sqlite3 *db, const char *sql) noexcept;
-
+    Statement(Connection *conn, const char *sql) noexcept;
     ~Statement() noexcept;
-
-    bool prepare(sqlite3 *db, const char *sql) noexcept;
 
     bool is_valid() const noexcept;
 
@@ -47,10 +45,22 @@ public:
      */
     bool bind(int pos, const Param& param) noexcept;
 
+    Connection* get_connection() const noexcept;
+
+    /**
+     * Original SQL string
+     */
+    const std::string& get_sql() const noexcept;
+
     sqlite3_stmt* get_raw_stmt() noexcept;
 
 private:
+    bool prepare(Connection *conn, const char *sql) noexcept;
+
+private:
+    nut::rc_ptr<Connection> _connection;
     sqlite3_stmt *_stmt = nullptr;
+    std::string _sql;
     std::vector<nut::rc_ptr<nut::enrc<std::string>>> _strings;
 };
 

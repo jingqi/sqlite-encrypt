@@ -7,6 +7,7 @@
 #include <nut/util/string/string_utils.h>
 
 #include "result_set.h"
+#include "connection.h"
 
 
 namespace sqlitecpp
@@ -18,9 +19,11 @@ ResultSet::ResultSet(Statement *stmt) noexcept
     assert(nullptr != stmt);
 }
 
-ResultSet::~ResultSet()
+ResultSet::~ResultSet() noexcept
 {
-    ::sqlite3_reset(_stmt->get_raw_stmt()); // Release internal lock
+    if (nullptr != _stmt && _stmt->is_valid())
+        _stmt->get_connection()->release_stmt(_stmt);
+    _stmt = nullptr;
 }
 
 bool ResultSet::next() noexcept

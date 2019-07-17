@@ -267,7 +267,7 @@ bool Connection::execute_update(
     clear_error();
 
     // 预编译
-    nut::rc_ptr<Statement> stmt = prepare_stmt(sql);
+    nut::rc_ptr<Statement> stmt = obtain_stmt(sql);
     if (nullptr == stmt)
         return false;
 
@@ -302,7 +302,7 @@ bool Connection::execute_update(
 
     // 执行
     const int irs = ::sqlite3_step(stmt->get_raw_stmt());
-    ::sqlite3_reset(stmt->get_raw_stmt()); // Release internal lock
+    release_stmt(stmt);
     if (SQLITE_DONE != irs)
     {
         on_error(irs);
@@ -318,7 +318,7 @@ bool Connection::execute_update(const char *sql, const std::vector<Param>& args)
     clear_error();
 
     // 预编译
-    nut::rc_ptr<Statement> stmt = prepare_stmt(sql);
+    nut::rc_ptr<Statement> stmt = obtain_stmt(sql);
     if (nullptr == stmt)
         return false;
 
@@ -338,7 +338,7 @@ bool Connection::execute_update(const char *sql, const std::vector<Param>& args)
     }
     // 执行
     const int irs = ::sqlite3_step(stmt->get_raw_stmt());
-    ::sqlite3_reset(stmt->get_raw_stmt()); // Release internal lock
+    release_stmt(stmt);
     if (SQLITE_DONE != irs)
     {
         on_error(irs);
@@ -357,7 +357,7 @@ nut::rc_ptr<ResultSet> Connection::execute_query(
     clear_error();
 
     // 预编译
-    nut::rc_ptr<Statement> stmt = prepare_stmt(sql);
+    nut::rc_ptr<Statement> stmt = obtain_stmt(sql);
     if (nullptr == stmt)
         return nullptr;
 
@@ -401,7 +401,7 @@ nut::rc_ptr<ResultSet> Connection::execute_query(const char *sql, const std::vec
     clear_error();
 
     // 预编译
-    nut::rc_ptr<Statement> stmt = prepare_stmt(sql);
+    nut::rc_ptr<Statement> stmt = obtain_stmt(sql);
     if (nullptr == stmt)
         return nullptr;
 
@@ -424,23 +424,32 @@ nut::rc_ptr<ResultSet> Connection::execute_query(const char *sql, const std::vec
     return nut::rc_new<ResultSet>(stmt);
 }
 
-nut::rc_ptr<Statement> Connection::prepare_stmt(const char *sql)
+nut::rc_ptr<Statement> Connection::obtain_stmt(const char *sql)
 {
     assert(nullptr != sql);
 
     std::string key(sql);
-    const nut::rc_ptr<Statement> *pstmt = _cached_stmts.get(key);
-    if (nullptr != pstmt && nullptr != *pstmt && (*pstmt)->is_valid())
-        return *pstmt;
+    nut::rc_ptr<Statement> stmt;
+    if (_cached_stmts.obtain_object(key, &stmt))
+    {
+        assert(nullptr != stmt && stmt->is_valid());
+        return stmt;
+    }
 
-    nut::rc_ptr<Statement> stmt = nut::rc_new<Statement>(_sqlite, sql);
+    stmt = nut::rc_new<Statement>(this, sql);
     if (!stmt->is_valid())
     {
         on_error();
         return nullptr;
     }
-    _cached_stmts.put(std::move(key), stmt);
     return stmt;
+}
+
+void Connection::release_stmt(Statement *stmt)
+{
+    assert(nullptr != stmt && !stmt->get_sql().empty());
+    ::sqlite3_reset(stmt->get_raw_stmt()); // Release internal lock
+    _cached_stmts.release_object(stmt->get_sql(), stmt);
 }
 
 void Connection::clear_error()

@@ -6,7 +6,8 @@
 
 #include <nut/platform/platform.h>
 #include <nut/rc/rc_ptr.h>
-#include <nut/container/lru_cache.h>
+#include <nut/rc/enrc.h>
+#include <nut/container/lru_pool.h>
 
 #include "sqlitecpp_config.h"
 #include <sqlite3.h>
@@ -28,6 +29,8 @@ namespace sqlitecpp
 class SQLITECPP_API Connection
 {
     NUT_REF_COUNTABLE
+
+    friend class ResultSet;
 
 public:
     Connection() = default;
@@ -120,14 +123,18 @@ public:
     nut::rc_ptr<ResultSet> execute_query(const char *sql, const std::vector<Param>& args);
 
 private:
-    nut::rc_ptr<Statement> prepare_stmt(const char *sql);
+    /**
+     * Statements pool
+     */
+    nut::rc_ptr<Statement> obtain_stmt(const char *sql);
+    void release_stmt(Statement *stmt);
 
     void clear_error();
     void on_error(int err = SQLITE_OK, const char *msg = nullptr);
 
 private:
     sqlite3 *_sqlite = nullptr;
-    nut::LRUCache<std::string, nut::rc_ptr<Statement>> _cached_stmts;
+    nut::LRUPool<std::string, nut::rc_ptr<Statement>> _cached_stmts;
 
     bool _throw_exceptions = false;
     int _last_error = SQLITE_OK;

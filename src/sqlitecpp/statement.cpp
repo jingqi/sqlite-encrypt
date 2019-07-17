@@ -1,14 +1,15 @@
 ﻿
 #include "statement.h"
+#include "connection.h"
 
 
 namespace sqlitecpp
 {
 
-Statement::Statement(sqlite3 *db, const char *sql) noexcept
+Statement::Statement(Connection *conn, const char *sql) noexcept
 {
-    assert(nullptr != db && nullptr != sql);
-    prepare(db, sql);
+    assert(nullptr != conn && nullptr != sql);
+    prepare(conn, sql);
 }
 
 Statement::~Statement() noexcept
@@ -16,11 +17,13 @@ Statement::~Statement() noexcept
     clear();
 }
 
-bool Statement::prepare(sqlite3 *db, const char *sql) noexcept
+bool Statement::prepare(Connection *conn, const char *sql) noexcept
 {
-    assert(nullptr != db && nullptr != sql);
+    assert(nullptr != conn && nullptr != sql);
     clear();
-    const int rs = ::sqlite3_prepare_v2(db, sql, -1, &_stmt, nullptr);
+    _connection = conn;
+    _sql = sql;
+    const int rs = ::sqlite3_prepare_v2(conn->get_raw_db(), sql, -1, &_stmt, nullptr);
     if (SQLITE_OK != rs || nullptr == _stmt)
         return false;
     return true;
@@ -49,6 +52,8 @@ void Statement::clear() noexcept
         ::sqlite3_finalize(_stmt);
         _stmt = nullptr;
     }
+    _connection = nullptr;
+    _sql.clear();
 }
 
 bool Statement::bind(int pos, const Param& param) noexcept
@@ -83,6 +88,16 @@ bool Statement::bind(int pos, const Param& param) noexcept
         assert(Param::Type::NOP == param.type);
         return true;
     }
+}
+
+Connection* Statement::get_connection() const noexcept
+{
+    return _connection;
+}
+
+const std::string& Statement::get_sql() const noexcept
+{
+    return _sql;
 }
 
 sqlite3_stmt* Statement::get_raw_stmt() noexcept
