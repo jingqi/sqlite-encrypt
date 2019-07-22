@@ -1,5 +1,5 @@
 
-TARGET = test_sqlitecpp
+TARGET = test-sqlitecpp
 TEMPLATE = app
 
 include(../sqlite_encrypt_common.pri)
@@ -10,7 +10,7 @@ CONFIG -= app_bundle
 
 DEFINES +=
 
-SRC_ROOT = $$PWD/../../../../src/test_sqlitecpp
+SRC_ROOT = $$PWD/../../../../src/test-sqlitecpp
 INCLUDEPATH += $${SRC_ROOT}
 
 HEADERS += $$files($${SRC_ROOT}/*.h*, true)

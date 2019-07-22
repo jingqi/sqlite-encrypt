@@ -3,7 +3,7 @@
 TARGET_NAME = sqlitecpp
 SRC_ROOT = ../../src/${TARGET_NAME}
 SQLITE_SRC_PATH = ../../src/sqlite
-SQLITE_ENCRYPT_SRC_PATH = ../../src/sqlite_encrypt
+SQLITE_ENCRYPT_SRC_PATH = ../../src/sqlite-encrypt
 
 # Preface rules
 include ${NUT_PATH}/proj/makefile/preface_rules.mk

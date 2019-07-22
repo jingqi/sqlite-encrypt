@@ -10,7 +10,7 @@ CONFIG -= qt
 DEFINES += BUILDING_SQLITECPP BUILDING_SQLITE_ENCRYPT
 
 SQLITE_SRC_PATH = $$PWD/../../../../src/sqlite
-SQLITE_ENCRYPT_SRC_PATH = $$PWD/../../../../src/sqlite_encrypt
+SQLITE_ENCRYPT_SRC_PATH = $$PWD/../../../../src/sqlite-encrypt
 SRC_ROOT = $$PWD/../../../../src/sqlitecpp
 
 INCLUDEPATH += $${SQLITE_SRC_PATH}

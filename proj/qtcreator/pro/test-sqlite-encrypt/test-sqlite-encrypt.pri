@@ -1,5 +1,5 @@
 
-TARGET = test_sqlite_encrypt
+TARGET = test-sqlite-encrypt
 TEMPLATE = app
 
 include(../sqlite_encrypt_common.pri)
@@ -10,7 +10,7 @@ CONFIG -= app_bundle
 
 DEFINES +=
 
-SRC_ROOT = $$PWD/../../../../src/test_sqlite_encrypt
+SRC_ROOT = $$PWD/../../../../src/test-sqlite-encrypt
 INCLUDEPATH += $${SRC_ROOT}
 
 HEADERS += $$files($${SRC_ROOT}/*.h*, true)
@@ -26,11 +26,11 @@ mac {
     LIBS += -lpthread
 }
 
-# sqlite_encrypt
+# sqlite-encrypt
 INCLUDEPATH += $$PWD/../../../../src/sqlite
-LIBS += -L$$OUT_PWD/../sqlite_encrypt$${OUT_TAIL}
-win32: LIBS += -lsqlite_encrypt3
-else: LIBS += -lsqlite_encrypt
+LIBS += -L$$OUT_PWD/../sqlite-encrypt$${OUT_TAIL}
+win32: LIBS += -lsqlite-encrypt3
+else: LIBS += -lsqlite-encrypt
 
 # nut
 INCLUDEPATH += $${NUT_PATH}/src

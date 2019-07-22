@@ -11,22 +11,22 @@ from nova.builtin import compile_c, file_op
 CWD = dirname(realpath(__file__))
 
 ns = globals()['namespace']
-ns.set_name('test_sqlitecpp')
+ns.set_name('test-sqlite-encrypt')
 
-ns.get_app().import_namespace(join(CWD, 'novaconfig_sqlitecpp.py'))
+ns.get_app().import_namespace(join(CWD, 'novaconfig-sqlite-encrypt.py'))
 
 ## Vars
-src_root = join(CWD, '../../src/test_sqlitecpp')
+src_root = join(CWD, '../../src/test-sqlite-encrypt')
 out_dir = platform.system().lower() + '-' + ('debug' if ns['DEBUG'] == '1' else 'release')
 out_root = join(CWD, out_dir)
-obj_root = join(out_root, 'obj/test_sqlitecpp')
-header_root = join(out_root, 'include/test_sqlitecpp')
+obj_root = join(out_root, 'obj/test-sqlite-encrypt')
+header_root = join(out_root, 'include/test-sqlite-encrypt')
 nut_proj_root = join(ns.getenv('NUT_PATH', join(CWD, '../../lib/nut.git')), 'proj/nova')
 
 ## Flags
 ns.append_env_flags('CPPFLAGS',
                     '-I' + realpath(join(out_root, 'include')),
-                    '-I' + realpath(join(out_root, 'include/sqlitecpp')),
+                    '-I' + realpath(join(out_root, 'include/sqlite-encrypt')),
                     '-I' + realpath(join(nut_proj_root, out_dir, 'include')))
 ns.append_env_flags('CFLAGS', '-std=c11')
 ns.append_env_flags('CXXFLAGS', '-std=c++11')
@@ -40,7 +40,7 @@ else:
 if platform.system() == 'Linux':
     ns.append_env_flags('LDFLAGS', '-lpthread', '-latomic')
 
-ns.append_env_flags('LDFLAGS', '-L' + out_root, '-lnut', '-lsqlitecpp')
+ns.append_env_flags('LDFLAGS', '-L' + out_root, '-lnut', '-lsqlite-encrypt')
 
 ## Dependencies
 
@@ -52,18 +52,18 @@ for src in file_utils.iterfiles(src_root, '.h'):
     ns.add_chained_deps('@headers', ih, h)
 
 # Compile .c .cpp
-program = join(out_root, 'test_sqlitecpp' + ns['PROGRAM_SUFFIX'])
+program = join(out_root, 'test-sqlite-encrypt' + ns['PROGRAM_SUFFIX'])
 ns.set_recipe('@read_deps', compile_c.read_deps)
 for src in file_utils.iterfiles(src_root, '.c', '.cpp'):
     c = src
     o = splitext(file_utils.chproot(src, src_root, obj_root))[0] + '.o'
     d = o + '.d'
     ns.add_dep(d, '@headers')
-    ns.add_dep(d, 'sqlitecpp|@headers')
+    ns.add_dep(d, 'sqlite-encrypt|@headers')
     ns.add_chained_deps(o, '@read_deps', d, c)
     ns.add_chained_deps(program, o, c)
 
-ns.add_dep(program, join(out_root, 'libsqlitecpp' + ns['SHARED_LIB_SUFFIX']))
+ns.add_dep(program, join(out_root, 'libsqlite-encrypt' + ns['SHARED_LIB_SUFFIX']))
 
 nut_dup = join(out_root, 'libnut' + ns['SHARED_LIB_SUFFIX'])
 ns.set_recipe(nut_dup, file_op.copyfile)

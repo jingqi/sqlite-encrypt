@@ -1,5 +1,5 @@
 
-TARGET = sqlite_encrypt
+TARGET = sqlite-encrypt
 TEMPLATE = lib
 VERSION = 3.15.1
 
@@ -10,7 +10,7 @@ CONFIG -= qt
 DEFINES += BUILDING_SQLITE_ENCRYPT
 
 SQLITE_SRC_PATH = $$PWD/../../../../src/sqlite
-SRC_ROOT = $$PWD/../../../../src/sqlite_encrypt
+SRC_ROOT = $$PWD/../../../../src/sqlite-encrypt
 
 INCLUDEPATH += $${SQLITE_SRC_PATH}
 

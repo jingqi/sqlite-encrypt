@@ -1,6 +1,6 @@
 #!/user/bin/env make
 
-TARGET_NAME = sqlite_encrypt
+TARGET_NAME = test-sqlite-encrypt
 SRC_ROOT = ../../src/${TARGET_NAME}
 SQLITE_SRC_PATH = ../../src/sqlite
 
@@ -11,7 +11,7 @@ include ${NUT_PATH}/proj/makefile/preface_rules.mk
 CPPFLAGS += -I${SRC_ROOT}/.. -I${SQLITE_SRC_PATH} -I${NUT_PATH}/src
 
 # Defines
-CPPFLAGS += -DBUILDING_SQLITE_ENCRYPT
+CPPFLAGS +=
 
 # C/C++ standard
 CFLAGS += -std=c11
@@ -21,11 +21,12 @@ CXXFLAGS += -std=c++11
 ifeq (${HOST}, Linux)
 	LDFLAGS += -lpthread
 endif
-LDFLAGS += -L${OUT_DIR} -lnut
-LIB_DEPS += ${OUT_DIR}/libnut.${DL_SUFFIX}
+LDFLAGS += -L${OUT_DIR} -lnut -lsqlite-encrypt
+LIB_DEPS += ${OUT_DIR}/libnut.${DL_SUFFIX} \
+			${OUT_DIR}/libsqlite-encrypt.${DL_SUFFIX}
 
 # TARGET
-TARGET = ${OUT_DIR}/lib${TARGET_NAME}.${DL_SUFFIX}
+TARGET = ${OUT_DIR}/${TARGET_NAME}
 
 .PHONY: all clean rebuild
 
@@ -35,8 +36,8 @@ clean:
 	rm -rf ${OBJS} ${DEPS} ${TARGET}
 
 rebuild:
-	$(MAKE) -f sqlite_encrypt.mk clean
-	$(MAKE) -f sqlite_encrypt.mk all
+	$(MAKE) -f test-sqilte-encrypt.mk clean
+	$(MAKE) -f test-sqilte-encrypt.mk all
 
 ${NUT_PATH}/proj/makefile/${OUT_DIR_NAME}/libnut.${DL_SUFFIX}:
 	cd ${NUT_PATH}/proj/makefile ; $(MAKE) -f nut.mk
@@ -44,6 +45,9 @@ ${NUT_PATH}/proj/makefile/${OUT_DIR_NAME}/libnut.${DL_SUFFIX}:
 ${OUT_DIR}/libnut.${DL_SUFFIX}: ${NUT_PATH}/proj/makefile/${OUT_DIR_NAME}/libnut.${DL_SUFFIX}
 	cp -f $< $@
 
+${OUT_DIR}/libsqlite-encrypt.${DL_SUFFIX}:
+	$(MAKE) -f sqlite-encrypt.mk
+
 # Rules
 include ${NUT_PATH}/proj/makefile/common_rules.mk
-include ${NUT_PATH}/proj/makefile/shared_lib_rules.mk
+include ${NUT_PATH}/proj/makefile/app_rules.mk

@@ -10,23 +10,22 @@ from nova.builtin import compile_c, file_op
 CWD = dirname(__file__)
 
 ns = globals()['namespace']
-ns.set_name('sqlitecpp')
+ns.set_name('sqlite-encrypt')
 
 nut_proj_root = join(ns.getenv('NUT_PATH', join(CWD, '../../lib/nut.git')), 'proj/nova')
-ns.get_app().import_namespace(join(nut_proj_root, 'novaconfig_nut.py'))
+ns.get_app().import_namespace(join(nut_proj_root, 'novaconfig-nut.py'))
 
 ## Vars
-src_root = join(CWD, '../../src/sqlitecpp')
+src_root = join(CWD, '../../src/sqlite-encrypt')
 sqlite_src_root = join(CWD, '../../src/sqlite')
-sqlite_encrypt_src_root = join(CWD, '../../src/sqlite_encrypt')
 out_dir = platform.system().lower() + '-' + ('debug' if ns['DEBUG'] == '1' else 'release')
 out_root = join(CWD, out_dir)
-obj_root = join(out_root, 'obj/sqlitecpp')
+obj_root = join(out_root, 'obj/sqlite-encrypt')
 include_root = join(out_root, 'include')
-header_root = join(include_root, 'sqlitecpp')
+header_root = join(include_root, 'sqlite-encrypt')
 
 ## Flags
-ns.append_env_flags('CPPFLAGS', '-DBUILDING_SQLITECPP', '-DBUILDING_SQLITE_ENCRYPT',
+ns.append_env_flags('CPPFLAGS', '-DBUILDING_SQLITE_ENCRYPT',
                     '-I' + realpath(include_root),
                     '-I' + realpath(sqlite_src_root),
                     '-I' + realpath(join(nut_proj_root, out_dir, 'include')))
@@ -49,16 +48,11 @@ if platform.system() != 'Windows':
 ns.append_env_flags('LDFLAGS', '-L' + out_root, '-lnut')
 
 ## Dependencies
-so = join(out_root, 'libsqlitecpp' + ns['SHARED_LIB_SUFFIX'])
+so = join(out_root, 'libsqlite-encrypt' + ns['SHARED_LIB_SUFFIX'])
 
 # Generate headers
 for src in file_utils.iterfiles(sqlite_src_root, '.h'):
     ih = file_utils.chproot(src, sqlite_src_root, header_root)
-    ns.set_recipe(ih, file_op.copyfile)
-    ns.add_chained_deps('@headers', ih, src)
-
-for src in file_utils.iterfiles(sqlite_encrypt_src_root, '.h'):
-    ih = file_utils.chproot(src, sqlite_encrypt_src_root, header_root)
     ns.set_recipe(ih, file_op.copyfile)
     ns.add_chained_deps('@headers', ih, src)
 
@@ -74,13 +68,6 @@ for src in file_utils.iterfiles(sqlite_src_root, '.c'):
     if basename(src) == 'sqlite3.c': # HACK "sqlite3.c" 被包含在了 "codecext.c" 中
         continue
     o = file_utils.chproot(src, sqlite_src_root, obj_root)[:-2] + '.o'
-    d = o + '.d'
-    ns.add_dep(d, '@headers')
-    ns.add_chained_deps(o, '@read_deps', d, src)
-    ns.add_chained_deps(so, o, src)
-
-for src in file_utils.iterfiles(sqlite_encrypt_src_root, '.c', '.cpp'):
-    o = file_utils.chproot(src, sqlite_encrypt_src_root, obj_root)[:-2] + '.o'
     d = o + '.d'
     ns.add_dep(d, '@headers')
     ns.add_chained_deps(o, '@read_deps', d, src)

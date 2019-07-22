@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29009.5
@@ -10,19 +10,19 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sqlitecpp", "sqlitecpp\sqli
 		{918B37F6-E5AD-4A20-9671-798F5AF50957} = {918B37F6-E5AD-4A20-9671-798F5AF50957}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_sqlite_encrypt", "test_sqlite_encrypt\test_sqlite_encrypt.vcxproj", "{7E8C50BD-3798-437B-8697-AB7E1FE48B67}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test-sqlite-encrypt", "test-sqlite-encrypt\test-sqlite-encrypt.vcxproj", "{7E8C50BD-3798-437B-8697-AB7E1FE48B67}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E7FF5485-8F37-4CAC-8166-2B893BE4496B} = {E7FF5485-8F37-4CAC-8166-2B893BE4496B}
 		{918B37F6-E5AD-4A20-9671-798F5AF50957} = {918B37F6-E5AD-4A20-9671-798F5AF50957}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_sqlitecpp", "test_sqlitecpp\test_sqlitecpp.vcxproj", "{3CB51B59-75B7-4971-9CEB-FB0BFFB57A80}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test-sqlitecpp", "test-sqlitecpp\test-sqlitecpp.vcxproj", "{3CB51B59-75B7-4971-9CEB-FB0BFFB57A80}"
 	ProjectSection(ProjectDependencies) = postProject
 		{4E0D9262-571D-4A6E-8E54-E82E0864F64D} = {4E0D9262-571D-4A6E-8E54-E82E0864F64D}
 		{918B37F6-E5AD-4A20-9671-798F5AF50957} = {918B37F6-E5AD-4A20-9671-798F5AF50957}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sqlite_encrypt", "sqlite_encrypt\sqlite_encrypt.vcxproj", "{E7FF5485-8F37-4CAC-8166-2B893BE4496B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sqlite-encrypt", "sqlite-encrypt\sqlite-encrypt.vcxproj", "{E7FF5485-8F37-4CAC-8166-2B893BE4496B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{918B37F6-E5AD-4A20-9671-798F5AF50957} = {918B37F6-E5AD-4A20-9671-798F5AF50957}
 	EndProjectSection
