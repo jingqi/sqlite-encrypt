@@ -26,7 +26,13 @@ SOURCES += \
     $$files($${SQLITE_ENCRYPT_SRC_PATH}/*.c*, true) \
     $$files($${SRC_ROOT}/*.c*, true)
 
-# 链接库
+# nut
+INCLUDEPATH += $${NUT_PATH}/src
+LIBS += -L$$OUT_PWD/../nut$${OUT_TAIL}
+win32: LIBS += -lnut1
+else: LIBS += -lnut
+
+# 其他链接库
 mac {
     LIBS += -lc++
 } else: unix {
@@ -34,9 +40,3 @@ mac {
 } else: win32 {
     LIBS += -lpthread
 }
-
-# nut
-INCLUDEPATH += $${NUT_PATH}/src
-LIBS += -L$$OUT_PWD/../nut$${OUT_TAIL}
-win32: LIBS += -lnut1
-else: LIBS += -lnut

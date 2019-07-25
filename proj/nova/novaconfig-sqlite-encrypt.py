@@ -32,20 +32,20 @@ ns.append_env_flags('CPPFLAGS', '-DBUILDING_SQLITE_ENCRYPT',
 ns.append_env_flags('CFLAGS', '-std=c11')
 ns.append_env_flags('CXXFLAGS', '-std=c++11')
 
-if platform.system() == 'Darwin':
-    ns.append_env_flags('CXXFLAGS', '-stdlib=libc++')
-    ns.append_env_flags('LDFLAGS', '-lc++')
-else:
-    ns.append_env_flags('LDFLAGS', '-lstdc++')
-
-# if platform.system() == 'Linux':
-#     ns.append_env_flags('LDFLAGS', '-lpthread', '-ldl', '-latomic')
-
 if platform.system() != 'Windows':
     ns.append_env_flags('CFLAGS', '-fPIC')
     ns.append_env_flags('CXXFLAGS', '-fPIC')
 
 ns.append_env_flags('LDFLAGS', '-L' + out_root, '-lnut')
+
+# if platform.system() == 'Linux':
+#     ns.append_env_flags('LDFLAGS', '-lpthread', '-ldl', '-latomic')
+
+if platform.system() == 'Darwin':
+    ns.append_env_flags('CXXFLAGS', '-stdlib=libc++')
+    ns.append_env_flags('LDFLAGS', '-lc++')
+else:
+    ns.append_env_flags('LDFLAGS', '-lstdc++')
 
 ## Dependencies
 so = join(out_root, 'libsqlite-encrypt' + ns['SHARED_LIB_SUFFIX'])

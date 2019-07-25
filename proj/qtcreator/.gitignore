@@ -2,4 +2,4 @@ Makefile*
 *.pro.user*
 
 /build
-/out
+/dist

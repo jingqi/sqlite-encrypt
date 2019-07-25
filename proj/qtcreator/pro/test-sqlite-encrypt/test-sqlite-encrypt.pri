@@ -17,15 +17,6 @@ HEADERS += $$files($${SRC_ROOT}/*.h*, true)
 
 SOURCES += $$files($${SRC_ROOT}/*.c*, true)
 
-# 链接库
-mac {
-    LIBS += -lc++
-} else: unix {
-    LIBS += -lrt
-} else: win32 {
-    LIBS += -lpthread
-}
-
 # sqlite-encrypt
 INCLUDEPATH += $$PWD/../../../../src/sqlite
 LIBS += -L$$OUT_PWD/../sqlite-encrypt$${OUT_TAIL}
@@ -37,3 +28,12 @@ INCLUDEPATH += $${NUT_PATH}/src
 LIBS += -L$$OUT_PWD/../nut$${OUT_TAIL}
 win32: LIBS += -lnut1
 else: LIBS += -lnut
+
+# 其他链接库
+mac {
+    LIBS += -lc++
+} else: unix {
+    LIBS += -lrt
+} else: win32 {
+    LIBS += -lpthread
+}
