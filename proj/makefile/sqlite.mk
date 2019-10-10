@@ -10,32 +10,30 @@ SRC_ROOT = ../../src/${TARGET_NAME}
 OBJ_ROOT = ${OUT_DIR}/obj/${TARGET_NAME}
 TARGET = ${OUT_DIR}/lib${TARGET_NAME}.${DL_SUFFIX}
 
-# Make dirs
-$(call make_image_dir_tree,${SRC_ROOT},${OBJ_ROOT})
-
 # C/C++ standard
 CFLAGS += -std=c11
 
 # Defines and flags
 
 # Includes
-CPPFLAGS += -I${SRC_ROOT} -I${NUT_PATH}/src
+CPPFLAGS += -I${SRC_ROOT}
 
 # Files
 # NOTE shell.c 含有 main() 函数，应该去除
 OBJS := ${OBJ_ROOT}/sqlite3.o
-DEPS := ${OBJ_ROOT}/sqlite3.d
+DEPS = ${OBJS:.o=.d}
 
 # Other libraries
 
 # Targets
-.PHONY: all clean rebuild
-
+.PHONY: all
 all: ${TARGET}
 
+.PHONY: clean
 clean:
-	rm -rf ${OBJS} ${DEPS} ${TARGET}
+	$(RM) ${OBJS} ${DEPS} ${TARGET}
 
+.PHONY: rebuild
 rebuild:
 	$(MAKE) -f sqlite.mk clean
 	$(MAKE) -f sqlite.mk all
